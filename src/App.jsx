@@ -1,28 +1,35 @@
-import { useState } from 'react'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { auth } from "./Config/firebase";
 
-import Header from './Components/Header'
-import { Outlet } from 'react-router';
-import Footer from './Components/Footer';
+import Header from "./Components/Header";
+import { Outlet } from "react-router";
+import Footer from "./Components/Footer";
+import Login from "./Components/Login";
 
 function App() {
   const [toggle, setToggle] = useState(false);
 
   const changeState = () => {
-    if(toggle === true) {
-      setToggle(false)
+    if (toggle === true) {
+      setToggle(false);
     }
-  }
+  };
 
   return (
-    <div onClick={() => { changeState()}}>
+    <div
+      onClick={() => {
+        changeState();
+      }}
+    >
       <ToastContainer />
 
       <header>
-        <Header toggle={toggle} setToggle={setToggle}/>
+        <Header toggle={toggle} setToggle={setToggle} />
       </header>
+
       <main className="mt-10">
         <Outlet />
       </main>
@@ -30,7 +37,7 @@ function App() {
         <Footer />
       </footer>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

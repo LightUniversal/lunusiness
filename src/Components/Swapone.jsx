@@ -1,7 +1,9 @@
 // src/components/PhoneDetail.js
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { db, storage } from "../Config/firebase";
+import { db, storage, auth } from "../Config/firebase";
+import { signInWithEmailAndPassword } from 'firebase/auth';
+
 import { doc, getDoc } from "firebase/firestore";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { toast } from "react-toastify";
@@ -19,6 +21,9 @@ const PhoneDetail = () => {
   const { id } = useParams();
   const [phone, setPhone] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [file, setFile] = useState("");
+  const [error, setError] = useState("");
+
   // const [url, setUrl] = useState("");
   // const [done, setDone] = useState(false);
 
@@ -26,16 +31,17 @@ const PhoneDetail = () => {
   // const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  console.log(auth.currentUser.email)
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
+    email: auth.currentUser ? auth.currentUser.email : "",
     number: "",
     phoneModel: "",
-    phoneCondition: "",
     description: "",
     contactPreference: "email",
     acceptTerms: false,
     receipt: "",
+    img: ""
   });
 
   const handleChange = (e) => {
@@ -44,6 +50,23 @@ const PhoneDetail = () => {
       ...formData,
       [name]: type === "checkbox" ? checked : value,
     });
+  };
+  let allow = ["image/png", "image/jpeg"];
+
+
+  const changeHandler = (e) => {
+    let selected = e.target.files[0];
+    if (selected && allow.includes(selected.type)) {
+      setFile(selected);
+      toast.success("image successfuly selected");
+      setError("");
+      console.log("Done...");
+    } else {
+      setFile(null);
+      setError("Please selecte an image file (png or jpeg");
+      toast.error(error);
+    }
+    console.log(selected);
   };
 
   const handleSubmit = (e) => {
@@ -197,39 +220,47 @@ const PhoneDetail = () => {
 
   return (
     <div className="container mx-auto p-5 py-20 pb-3">
-      <h2 className="text-3xl font-bold mb-5">{phone.name}</h2>
+      <h2 className="text-xl font-bold text-green-800 mb-5">{phone.name}</h2>
       <div className="flex flex-col justify-center gap-10 md:flex-row ">
-        <div className="w-full md:h-[450px] md:w-3/5 border  p-5 rounded-lg">
+        <div className="w-full md:h-[450px] md:w-3/5 border bg-slate-50 bg-opacity-[0.6] border-slate-100  p-5 rounded-lg">
           <div
             className="h-[200px] bg-cover  bg-center mb-4 rounded-lg"
             style={{ backgroundImage: `url(${phone.imageUrl})` }}
           ></div>
-          <h2 className="text-xl font-semibold mb-2">{phone.name}</h2>
-          <p className="text-gray-600 mb-4">{phone.description}</p>
-          <p className="text-lg font-bold justify-between flex items-center text-green-700">
+          <h2 className="text-2xl font-semibold text-green-800 mb-2">{phone.name}</h2>
+          <p className="font-medium text-sm mb-4 text-green-800">{phone.description}</p>
+          <p className="text-lg font-medium justify-between flex items-center text-green-900">
             ₦ {phone.price}{" "}
             <a
               href="tel:+2347058032078"
-              className=" flex items-center text-sm font-bold gap-3 border bg-green-700 rounded-lg text-slate-100 px-5 py-3"
+              className=" flex items-center text-sm font-bold gap-3 border bg-slate-700 rounded-lg text-slate-100 px-5 py-3"
             >
-              Buy <FaShoppingCart className=" text-white" />
+              Buy <FaShoppingCart className=" text-green-400" />
             </a>
           </p>
         </div>
-        <div className="forms w-full px-1 md:w-3/4">
-          <h2 className="text-3xl mb-6 font-bold text-slate-600">
-            Provide Your Phone Details
+        <div className="forms w-full px-3 md:w-3/4 bg-slate-50 bg-opacity-[0.6] py-3">
+          <h2 className="text-2xl mb-1  font-bold text-green-800">
+            Ready to Swap? <br />
+            <p className="text-sm mb-2 text-slate-700 mt-3 font-normal ">
+            The "swap" feature lets you trade your phones with others,
+            offering a budget-friendly alternative to buying or selling.
+          </p>
+            
           </h2>
+          <p className="text-green-800  my-5   font-bold text-[17px]">
+              Provide Your Phone Details
+            </p>
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Name Input */}
             <div>
-              <label className="block text-gray-600">Name</label>
               <input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full mt-1 p-3 border border-gray-100 rounded-lg"
+                className="border text-[13px] border-slate-500 text-slate-700 outline-none px-5 py-5 rounded-lg w-full"
+
                 placeholder="Enter your name"
                 required
               />
@@ -237,52 +268,55 @@ const PhoneDetail = () => {
 
             {/* Email Input */}
             <div>
-              <label className="block text-gray-600">Email</label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full mt-1 p-3 border border-gray-100 rounded-lg"
+                className="border text-[13px] border-slate-500 text-slate-700 outline-none px-5 py-5 rounded-lg w-full"
+
                 placeholder="Enter your email"
                 required
               />
             </div>
             {/* Phone Number Input */}
             <div>
-              <label className="block text-gray-600">Phone Number</label>
               <input
                 type="number"
                 name="number"
                 value={formData.number}
                 onChange={handleChange}
-                className="w-full mt-1 p-3 border border-gray-100 rounded-lg"
-                placeholder="Enter your email"
+                className="border text-[13px] border-slate-500 text-slate-700 outline-none px-5 py-5 rounded-lg w-full"
+
+                placeholder="Enter your Phone numnber"
                 required
               />
             </div>
 
             {/* Phone Model Dropdown */}
             <div>
-              <label className="block text-gray-600">Phone Model</label>
               <select
                 name="phoneModel"
                 value={formData.phoneModel}
                 onChange={handleChange}
-                className="w-full mt-1 p-3 outiline h-[60px] bg-black text-white cursor-pointer border border-gray-100 rounded-lg"
+                className="border text-[13px] border-slate-500 text-slate-700 outline-none px-5 py-5 rounded-lg w-full"
+
                 required
               >
                 <option value="">Select your phone model</option>
                 <option value="iPhone 12">iPhone 12</option>
-                <option value="Samsung Galaxy S21">Samsung Galaxy S21</option>
-                <option value="Google Pixel 5">Google Pixel 5</option>
+                <option value="Samsung Galaxy S21">Iphone 11</option>
+                <option value="Iphone 10">Iphone 10</option>
+                <option value="Google Pixel 5">Iphone XR</option>
+                <option value="Iphone XX">Iphone XX</option>
+                <option value="Iphone X">Iphone X</option>
                 {/* Add more options as needed */}
               </select>
             </div>
 
             {/* Phone Condition Radio Buttons */}
-            <div>
-              <label className="block text-gray-600 pt-4">
+            {/* <div>
+              <label className="block text-black font-bold pt-4 px-3">
                 Phone Condition
               </label>
               <div className="flex space-x-4 mt-1">
@@ -320,18 +354,16 @@ const PhoneDetail = () => {
                   Fair
                 </label>
               </div>
-            </div>
+            </div> */}
 
             {/* Description Text Area */}
             <div>
-              <label className="block text-gray-600 text-md mt-2">
-                Description
-              </label>
               <textarea
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
-                className="w-full mt-1 p-3 border border-gray-100 rounded-lg"
+                className="border text-[13px] border-slate-500 text-slate-700 outline-none px-5 py-5 rounded-lg w-full"
+
                 placeholder="Describe your phone's condition and features"
                 rows="4"
                 required
@@ -340,18 +372,39 @@ const PhoneDetail = () => {
 
             {/* Contact Preference Select */}
             <div>
-              <label className="block text-gray-600">Contact Preference</label>
+              <label className="block text-green-800 px-3 font-bold">
+                Contact Preference
+              </label>
               <select
                 name="contactPreference"
                 value={formData.contactPreference}
                 onChange={handleChange}
-                className="w-full mt-1 p-2 border border-gray-100 rounded-lg"
+                className="border text-[13px] border-slate-500 text-slate-700 outline-none px-5 py-5 rounded-lg w-full"
+
               >
                 <option value="email">Email</option>
                 <option value="phone">Phone</option>
               </select>
             </div>
 
+            {/* upload phone image */}
+            <div className="image w-full md:w-full flex md:my-5 flex-wrap md:flex-nowrap items-center gap-2 md:gap-10">
+          <input
+            type="text"
+            value={file.name}
+            onChange={(e) => changeHandler(e)}
+            placeholder="upload phone image"
+            className="border text-[13px] border-slate-500 text-slate-700 outline-none px-5 py-5 rounded-lg w-full"
+            id="image"
+          />
+          <input
+            type="file"
+            name="image"
+            className=" py-5 file:bg-green-800 w-full cursor-pointer file:outline-none file:border-none file:px-5 file:rounded-lg text-white  file:py-2 file:text-sm file:text-white  inline-block mx-1"
+            id="file"
+            onChange={(e) => changeHandler(e)}
+          />
+        </div>
             {/* Accept Terms Checkbox */}
             <div>
               <label className="flex items-center">
@@ -377,7 +430,7 @@ const PhoneDetail = () => {
             <div>
               <button
                 type="submit"
-                className="w-full py-4 px-4 bg-blue-800 text-white font-semibold rounded hover:bg-blue-700 transition"
+                className="w-full py-4 px-4 bg-green-800 text-white font-semibold rounded-md hover:bg-blue-700 transition"
               >
                 Process Swap
               </button>

@@ -11,13 +11,13 @@ const PhoneCard = ({ phone }) => {
         style={{ backgroundImage: `url(${phone.imageUrl})` }}
       ></div>
       <div className="p-4">
-        <h2 className="text-xl font-semibold mb-2">{phone.name}</h2>
-        <p className="text-gray-600 text-sm font-medium mb-4">{phone.description}</p>
-        <p className="text-lg font-medium text-green-600">₦{phone.price}</p>
+        <h2 className="text-xl font-semibold mb-2">- {phone.name} -</h2>
+        <p className="text-gray-600 text-sm font-medium mb-4"> ( {phone.description} )</p>
+        <p className="text-md font-medium text-green-600">₦{phone.price} </p>
       </div>
       <div className="flex w-full justify-between">
-        <a href="tel:+2347058032078" className=' flex rounded-lg items-center text-black text-sm font-bold gap-3  border-slate-200 shadow-sm   px-5 py-3'>
-            Order Now <FaPhone className=' ' />
+        <a href="tel:+2347058032078" className=' flex  items-center  text-green-700 text-sm font-bold gap-3  border-slate-500  border-r   px-5 py-3'>
+            Order Now <FaPhone className='  text-slate-700' />
         </a>
         <Link to={`/swap/${phone.id}`} href="tel:+2347058032078" className=' flex items-center text-sm font-bold gap-3 border bg-black rounded-lg text-slate-100 px-5 py-3'>
             Swap <FaExchangeAlt className=' text-green-700' />

@@ -25,7 +25,7 @@ const Contact = () => {
   return (
     <div className=" ">
       <div className="contact text-slate-100">
-      <section className="  flex flex-col p-10 flex-wrap gap-2 h-[400px]  items-center justify-center font-bold" style={{ backgroundColor:"rgba(20,10,10,0.9)"}}>
+      <section className="  flex flex-col p-10 flex-wrap gap-2 h-[400px]  items-center justify-center font-bold" style={{ backgroundColor:"rgba(00,0,0,0.9)"}}>
         <h2 className="title text-3xl text-center">
           Contact Us
         </h2>
@@ -41,24 +41,24 @@ const Contact = () => {
           Email Us 
         </h1>
         <h5 className="text-blue-400 text-sm ">
-          <a href="mailto:lightsinfo78@gmail.com" className=" bg-slate-950 w-[300px] p-6 rounded-lg  flex gap-1 items-center">Email Us <FaEnvelope />  </a>
+          <a href="mailto:lightsinfo78@gmail.com" className=" bg-slate-50 w-[300px] p-6 rounded-lg  flex gap-1 items-center">Email Us <FaEnvelope />  </a>
         </h5>
         <h1 className="email mt-5">
           Call Us 
         </h1>
         <h5 className="text-blue-700 text-sm ">
-          <a href="mailto:lightsinfo78@gmail.com" className="  bg-slate-950 w-[300px] p-6 rounded-lg  flex gap-1 items-center">Call Us <FaPhone /> </a>
+          <a href="mailto:lightsinfo78@gmail.com" className="  bg-slate-50 w-[300px] p-6 rounded-lg  flex gap-1 items-center">Call Us <FaPhone /> </a>
         </h5>
         <h1 className="email mt-5">
           Send Us Direct message (sms) 
         </h1>
         <h5 className="text-blue-700 text-sm ">
-          <a href="sms:+2347058032078" className="  bg-slate-950 w-[300px] p-6 rounded-lg  flex gap-1 items-center">click Here<FaEnvelope />  </a>
+          <a href="sms:+2347058032078" className="  bg-slate-50 w-[300px] p-6 rounded-lg  flex gap-1 items-center">click Here<FaEnvelope />  </a>
         </h5>
       </section>
       <section className="message w-full md:w-3/4">
         <form action="#" onSubmit={(e) => submitReply(e)}>
-        <textarea name="message" value={reply} onChange={(e) => setReply(e.target.value)} id="message" className=" border outline-none border-slate-200 text-sm rounded-md shadow-md w-full p-5" cols={"100"} rows={"10"} placeholder="Leave a message for us"></textarea>
+        <textarea name="message" value={reply} onChange={(e) => setReply(e.target.value)} id="message" className=" border outline-none border-slate-50 text-sm rounded-md shadow-md w-full p-5" cols={"100"} rows={"10"} placeholder="Leave a message for us"></textarea>
         <button type="submit" onClick={(e) => submitReply(e)} className=" flex gap-2 items-center bg-black text-white px-5 rounded-md py-3 ">Send <FaPaperPlane /></button>
         </form>
       </section>

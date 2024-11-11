@@ -77,7 +77,7 @@ const HeroSection = () => {
   
 
   return (
-    <div className=" w-full bg-gray-100 text-white relative top-[30px] border">
+    <div className=" w-full bg-gray-100 text-white relative overflow-hidden top-[30px] border">
       <Slider {...sliderSettings}>
       {phones.map((phone) => (
           <PhoneCard key={phone.id} phone={phone} />

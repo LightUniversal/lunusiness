@@ -49,6 +49,7 @@ const UploadProduct = () => {
             console.log("loading...");
           }
           toast.success("Product Image successfully uploaded to the database");
+
         }
       );
     } else {
@@ -58,9 +59,10 @@ const UploadProduct = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    console.log("working", db, productDescription,productName,productPrice,url)
     if (productDescription && productName && productPrice && url ) {
       const dbRef = collection(db, "products");
+      console.log(dbRef);
       addDoc(dbRef, {
         name:productName,
         description:productDescription,

@@ -3,8 +3,10 @@ import { db } from "../Config/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import PhoneCard from "./PhoneCard";
 import swap from "../assets/imgs/swap.png";
+import img from "../assets/imgs/img.jpg";
 
-import { FaMobile } from "react-icons/fa";
+import { FaExchangeAlt, FaMobile } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const PhoneLists = () => {
   const [phones, setPhones] = useState([]);
@@ -26,20 +28,22 @@ const PhoneLists = () => {
           Classical Phone Store <FaMobile className=" text-green-600" />
         </h1>
       </header>
-      <main className="container mx-auto p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <main className="container mx-auto p-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {phones.map((phone) => (
           <PhoneCard key={phone.id} phone={phone} />
         ))}
-        
       </main>
       <footer>
-      <div className="swapdetails flex-wrap md:flex-nowrap justify-center flex gap-10 my-5 items-center">
+        <div className="swapdetails flex-wrap md:flex-nowrap justify-center flex gap-10 my-5 items-center">
           <div className="  rounded-md">
             <h3 className="text-3xl text-slate-600 mb-4 font-bold px-7">
-                Purchase with Ease
+              Purchase with Ease
             </h3>
             <p className="my-2  text-sm text-slate-800 px-7">
-            Whether you're looking to upgrade to a newer model, exchange your current phone for a different brand, or purchase a pre-owned device at a great price, we make the process simple and transparent.
+              Whether you're looking to upgrade to a newer model, exchange your
+              current phone for a different brand, or purchase a pre-owned
+              device at a great price, we make the process simple and
+              transparent.
             </p>
             <img src={swap} alt="" />
           </div>
@@ -64,13 +68,15 @@ const PhoneLists = () => {
               </small>
             </p>
             <br />
-            <a
-              href="#available"
-              className=" p-3 rounded-md px-5 bg-green-800 text-white inline-block"
+            <Link
+              to={"/swap"}
+              className=" flex p-3 rounded-md items-center gap-4 px-5 bg-green-800 justify-center text-white w-[200px]"
             >
-             Get Started
-            </a>
+              Get Started <FaExchangeAlt className=" text-slate-100" />
+            </Link>
           </div>
+        </div>
+        <div className="flex">
         </div>
       </footer>
     </div>
